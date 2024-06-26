@@ -1,0 +1,412 @@
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <script type="text/javascript">
+        function showHint(str) {
+            var xmlhttp;
+
+            if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+                xmlhttp = new XMLHttpRequest();
+            }
+            else {// code for IE6, IE5
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                    var result = xmlhttp.responseText;
+                    var obj = JSON.parse(result);//解析json字串為json物件形式
+
+                    var html = '<div class="demo"><table class="bordered">';//
+
+                    
+
+        for (var i = 0; i < obj.length; i++) {//
+                       if(i==0)
+                            {
+                                html += '<thead><tr>';
+                            }else
+                            {
+                                html += '<tr>';
+
+                            }
+                        
+                        for (j = 0; j < obj[i].data.length; j++) {
+                            
+                            if(i==0)
+                            {
+                                if(j==1 || j==2 || j==5 || j==6 || j==7  || j==7 || j==8)
+                                {
+
+                                    html += '<th>' + obj[i].data[j] + '</th>';
+
+                                }
+
+                            }else
+                            {
+
+                                if(j==1 || j==2 || j==5 || j==6 || j==7  || j==7 || j==8)
+                                html += '<td>' + obj[i].data[j] + '</td>';
+
+                            }
+                            
+                            
+                        }
+
+                        if(i==0)
+                        {
+
+                            html += '</tr></thead><tbody>';
+                        }else
+                        {
+                            html += '</tr>';
+                        }
+
+                        
+                    }
+                    
+                    html += "</tbody></table></div>";
+
+                    document.getElementById("order_status").innerHTML = html;
+                    if (obj.length == 1) //只有一筆代表查不到資料
+                        alert('查無資料');
+                }
+
+            }
+            var url = "https://script.google.com/macros/s/AKfycbzRnGXBNnm7KZGu3jU2vg-j5PG_OVVA1SgOpdSUa6pyqAuSGZlaOP7kqQ1Z10air2gj8g/exec";
+            xmlhttp.open("get", url + "?uid=" + encodeURIComponent(str), true);
+            xmlhttp.send();
+        }
+
+function setFocus(on) {
+  var element = document.activeElement;
+  if (on) {
+    setTimeout(function () {
+      element.parentNode.classList.add("focus");
+    });
+  } else {
+    let box = document.querySelector(".input-box");
+    box.classList.remove("focus");
+    $("input").each(function () {
+      var $input = $(this);
+      var $parent = $input.closest(".input-box");
+      if ($input.val()) $parent.addClass("focus");
+      else $parent.removeClass("focus");
+    });
+  }
+}
+
+    </script>
+
+<style type="text/css">
+    *{
+  margin: 0;
+  padding: 0;
+}
+
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:400,400i,600,700");
+
+$color: #80868b;
+$active-color: #1a73e8;
+$error-color: #f44336;
+$input-value-color: #202124;
+$border-color: 1px solid #dadce0;
+
+$border-color-active: 2px solid $active-color;
+$default-background: #fff;
+
+/* Buttons */
+$btn-default-bg-color: #fff;
+$btn-default-bgh-color: #ddd;
+$btn-default-text-color: #333;
+
+$btn-primary-bg-color: #1a73e8;
+$btn-primary-bgh-color: #287ae6;
+$btn-primary-boxshadow-color: 0 1px 1px 0 rgba(66, 133, 244, 0.45),
+  0 1px 3px 1px rgba(66, 133, 244, 0.3);
+$btn-primary-text-color: #fff;
+
+
+body {
+  padding: 40px 100px;
+  font-family: "open sans", roboto, arial, sans-seif;
+  background: $default-background;
+}
+input {
+  background: $default-background;
+}
+#form {
+  width: 40vw;
+  margin: 0 auto;
+  margin-top: 50px;
+}
+.input-box.active-grey {
+  .input-1 {
+    border: $border-color;
+  }
+  .input-label {
+    color: $color;
+    top: -8px;
+    background: $default-background;
+    font-size: 11px;
+
+    transition: 250ms;
+
+    svg {
+      position: relative;
+      width: 11px;
+      height: 11px;
+      top: 2px;
+      transition: 250ms;
+    }
+  }
+}
+.input-box {
+  position: relative;
+  margin: 10px 0;
+  .input-label {
+    position: absolute;
+    color: $color;
+    font-size: 16px;
+    font-weight: 400;
+    max-width: calc(100% - (2 * 8px));
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    left: 8px;
+    top: 13px;
+    padding: 0 8px;
+    transition: 250ms;
+    user-select: none;
+    pointer-events: none;
+    svg {
+      position: relative;
+      width: 15px;
+      height: 15px;
+      top: 2px;
+      transition: 250ms;
+    }
+  }
+  .input-1 {
+    box-sizing: border-box;
+    height: 50px;
+    width: 100%;
+    border-radius: 4px;
+    color: $input-value-color;
+    border: $border-color;
+    padding: 13px 15px;
+
+    transition: 250ms;
+    &:focus {
+      outline: none;
+      border: 2px solid #1a73e8;
+      transition: 250ms;
+    }
+  }
+}
+.input-box.error {
+  .input-label {
+    color: $error-color;
+    top: -8px;
+    background: $default-background;
+    font-size: 11px;
+    transition: 250ms;
+  }
+  .input-1 {
+    border: 2px solid $error-color;
+  }
+}
+.input-box.focus,
+.input-box.active {
+  .input-label {
+    color: $active-color;
+    top: -8px;
+    background: $default-background;
+    font-size: 11px;
+
+    transition: 250ms;
+
+    svg {
+      position: relative;
+      width: 11px;
+      height: 11px;
+      top: 2px;
+      transition: 250ms;
+    }
+  }
+}
+.input-box.active {
+  .input-1 {
+    border: 2px solid #1a73e8;
+  }
+}
+.btn {
+  background: $btn-default-bg-color;
+  color: $btn-default-text-color;
+  cursor: pointer;
+  border: none;
+  white-space: normal;
+  letter-spacing: 0.25px;
+  font-weight: 400;
+  font-size: 14px;
+  padding: 8px 16px;
+  border-radius: 4px;
+  line-height: 20px;
+  min-width: 88px;
+  transition: 250ms;
+
+  &:hover {
+    background: $btn-default-bgh-color;
+    transition: 250ms;
+  }
+  &:focus {
+    outline: none;
+  }
+}
+.btn-primary {
+  background: $btn-primary-bg-color;
+  color: $btn-primary-text-color;
+  transition: 250ms;
+  &:hover {
+    background: $btn-primary-bgh-color;
+    box-shadow: $btn-primary-boxshadow-color;
+    transition: 250ms;
+  }
+}
+
+.pull-right {
+  float: right;
+}
+.clear {
+  clear: both;
+}
+
+
+.demo{
+  width: 600px;
+  margin: 40px auto;
+  font-family: "trebuchet MS","Lucida sans","Arial";
+  font-size: 14px;
+  color: #444;
+}
+/*表格的默认设置*/
+table {
+  *border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+}
+/*==========制作圆角表格===========*/
+.bordered {
+  border: solid #ccc 1px;
+  border-radius: 6px;
+  box-shadow: 0 1px 1px #ccc;
+}
+.borderd tr {
+  -o-transition: all 0.1s ease-in-out;
+  -webkit-transition: all 0.1s ease-in-out;
+  -moz-transition: all 0.1s ease-in-out;
+  -ms-transition: all 0.1s ease-in-out;
+  transition: all 0.1s ease-in-out;
+}
+.bordered .highlight,
+.bordered tr:hover {
+  background: #fbf8e9;/*表格行的悬浮状态效果*/ 
+}
+.bordered td, 
+.bordered th {
+  border-left: 1px solid #ccc;
+  border-top: 1px solid #ccc;
+  padding: 10px;
+  text-align: left;
+}
+.bordered th {
+    /*表格表头添加渐变背景色*/
+  background-color: #dce9f9;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#ebf3fc), to(#dce9f9));
+  background-image: -webkit-linear-gradient(top, #ebf3fc, #dce9f9);
+  background-image: -moz-linear-gradient(top, #ebf3fc, #dce9f9);
+  background-image: -ms-linear-gradient(top, #ebf3fc, #dce9f9);
+  background-image: -o-linear-gradient(top, #ebf3fc, #dce9f9);
+  background-image: linear-gradient(top, #ebf3fc, #dce9f9);
+  filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr=#ebf3fc, endColorstr=#dce9f9);
+  -ms-filter: "progid:DXImageTransform.Microsoft.gradient (GradientType=0, startColorstr=#ebf3fc, endColorstr=#dce9f9)";    
+  box-shadow: 0 1px 0 rgba(255,255,255,.8) inset;/*表格表头设置内阴影*/
+  border-top: none; 
+  text-shadow: 0 1px 0 rgba(255,255,255,.5);/*表格表头设置文字阴影*/
+}
+/*使用:first-child去除表格每行的第一个单元格的左边框*/
+.bordered td:first-child, 
+.bordered th:first-child {
+  border-left: none;
+}
+/*=======制作Zebra表格（斑马线表格）效果==========*/
+.zebra td, 
+.zebra th {
+  padding: 10px;
+  border-bottom: 1px solid #f2f2f2;
+}
+/*使用:nth-child(even)给表格的奇数行添加背景和阴影效果*/
+.zebra .alternate,
+.zebra tbody tr:nth-child(even) {
+  background: #f5f5f5;
+  box-shadow: 0 1px 0 rgba(255,255,255,.8) inset;
+}
+.zebra th {
+  text-align: left;
+  text-shadow: 0 1px 0 rgba(255,255,255,.5);
+  border-bottom: 1px solid #ccc;
+  background-color: #eee;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#f5f5f5), to(#eee));
+  background-image: -webkit-linear-gradient(top, #f5f5f5, #eee);
+  background-image: -moz-linear-gradient(top, #f5f5f5, #eee);
+  background-image: -ms-linear-gradient(top, #f5f5f5, #eee);
+  background-image: -o-linear-gradient(top, #f5f5f5, #eee);
+  background-image: linear-gradient(top, #f5f5f5, #eee);
+  filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr=#f5f5f5, endColorstr=#eeeeee);
+  -ms-filter: "progid:DXImageTransform.Microsoft.gradient (GradientType=0, startColorstr=#f5f5f5, endColorstr=#eeeeee)";
+}
+/*使用 :first-child设置表格表头第一个单元格左上角为圆角*/
+.zebra th:first-child {
+  border-radius: 6px 0 0 0;
+}
+/*使用 :last-child设置表格表头最后一个单元格右上角为圆角*/
+.zebra th:last-child {
+  border-radius: 0 6px 0 0;
+}
+.zebra tfoot td {
+  border-bottom: 0;
+  border-top: 1px solid #fff;
+  background-color: #f1f1f1;
+}
+/*使用 :first-child设置表格脚部第一个单元格左下角为圆角*/
+.zebra tfoot td:first-child {
+  border-radius: 0 0 0 6px;
+}
+/*使用 :last-child设置表格脚部最后一个单元格右下角为圆角*/
+.zebra tfoot td:last-child {
+  border-radius: 0 0 6px 0;
+}
+
+
+</style>
+
+</head>
+
+<body>
+<form id="form">
+    <div class="input-box">
+     輸入購買者電話
+    <input type="text" id="uid" class="input-1" onfocus="setFocus(true)" onblur="setFocus(false)"/>
+   
+   </div>
+
+ <button type="button" name="inq"  onclick="showHint(uid.value);" class="btn btn-primary pull-right">查詢</button>
+
+   <div class="clear"></div>
+    <span id="order_status"></span>
+</from>
+</body>
+
+</html>
+
+
