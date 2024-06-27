@@ -387,15 +387,42 @@ table {
   border-radius: 0 0 6px 0;
 }
 
+.o17{
+  text-align: center;
+  color: red;
+  span{
+     position: relative;
+     display: inline-block;
+     padding-bottom:0.5em;
+     border-bottom: 1px solid black;
+    &:before,&:after{
+      position: absolute;
+     top: 100%;
+     left:50%;
+     transform:translateX(-50%);
+     content: '';
+     border: 10px solid transparent;
+    }
+    &:before{
+      border-top: 10px solid black;
+    }
+    &:after{
+     margin-top: -1px;
+     border-top: 10px solid white;
+    }
+  }
+}
 
 </style>
 
 </head>
 
 <body>
+
+    <div class="col-md-4 col-sm-6"><h1 class="o17"><span>聚財正香預購訂單查詢</span></h1></div>
 <form id="form">
     <div class="input-box">
-     輸入購買者電話
+     <h2 class="o17">輸入購買者電話<h2>
     <input type="text" id="uid" class="input-1" onfocus="setFocus(true)" onblur="setFocus(false)"/>
    
    </div>
